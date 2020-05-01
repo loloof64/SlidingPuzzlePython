@@ -29,7 +29,7 @@ class GamePanel(wx.Panel):
         position = -1
         for index in range(len(self._values)):
             current_value = self._values[index]
-            if 0 == current_value:
+            if 15 == current_value:
                 position = index
         return position 
 
