@@ -1,12 +1,29 @@
 import wx
+import random
 
-class MainPanel(wx.Panel):
+class GamePanel(wx.Panel):
 
     def __init__(self, parent, size):
         wx.Panel.__init__(self, parent, size=size)
         self._values= [i for i in range(16)]
-        wx.CallLater(1000, self.DrawTiles)
+        self._shuffle()
+        wx.CallLater(1000, self._drawTiles)
         self.Bind(wx.EVT_KEY_UP, self._handleKeyDown)
+
+    def _shuffle(self):
+        for i in range(20):
+            success = False
+            while not success:
+                direction = random.randint(1, 4)
+                if 1 == direction:
+                    success = self._moveHoleLeft()
+                elif 2 == direction:
+                    success = self._moveHoleRight()
+                elif 3 == direction:
+                    success = self._moveHoleUp()
+                elif 4 == direction:
+                    success = self._moveHoleDown()
+
 
     def _findHoleIndex(self):
         position = -1
@@ -24,40 +41,51 @@ class MainPanel(wx.Panel):
     def _handleKeyDown(self, event):
         key = event.GetKeyCode()
         if key == wx.WXK_UP:
-            self.MoveHoleUp()
-            self.DrawTiles()
+            self._moveHoleUp()
+            self._drawTiles()
+            event.Skip()
         elif key == wx.WXK_DOWN:
-            self.MoveHoleDown()
-            self.DrawTiles()
+            self._moveHoleDown()
+            self._drawTiles()
+            event.Skip()
         elif key == wx.WXK_LEFT:
-            self.MoveHoleLeft()
-            self.DrawTiles()
+            self._moveHoleLeft()
+            self._drawTiles()
+            event.Skip()
         elif key == wx.WXK_RIGHT:
-            self.MoveHoleRight()
-            self.DrawTiles()
-        event.Skip()
+            self._moveHoleRight()
+            self._drawTiles()
+            event.Skip()
 
-    def MoveHoleUp(self):
+    def _moveHoleUp(self):
         hole_index = self._findHoleIndex()
         if hole_index > 3:
             self._swapValues(hole_index, hole_index-4)
+            return True
+        return False
 
-    def MoveHoleDown(self):
+    def _moveHoleDown(self):
         hole_index = self._findHoleIndex()
         if hole_index < 12:
             self._swapValues(hole_index, hole_index+4)
+            return True
+        return False
 
-    def MoveHoleLeft(self):
+    def _moveHoleLeft(self):
         hole_index = self._findHoleIndex()
         if hole_index % 4 > 0:
             self._swapValues(hole_index, hole_index-1)
+            return True
+        return False
 
-    def MoveHoleRight(self):
+    def _moveHoleRight(self):
         hole_index = self._findHoleIndex()
         if hole_index % 4 < 3:
             self._swapValues(hole_index, hole_index+1)
+            return True
+        return False
 
-    def DrawTiles(self):
+    def _drawTiles(self):
         dc = wx.ClientDC(self)
         pen = wx.Pen(wx.BLACK)
         pen.SetWidth(10)
