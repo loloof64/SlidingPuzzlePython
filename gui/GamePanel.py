@@ -102,7 +102,7 @@ class GamePanel(wx.Panel):
                 dc.DrawLine(100 + 80*col, 20 + 80*row, 100 + 80*col, 100 + 80*row)
                 dc.DrawLine(100 + 80*col, 100 + 80*row, 20 + 80*col, 100 + 80*row)
                 dc.DrawLine(20 + 80*col, 100 + 80*row, 20 + 80*col, 20 + 80*row)
-                dc.SetBrush(wx.Brush('#cde' if value > 0 else wx.RED))
+                dc.SetBrush(wx.Brush('#cde' if value < 15 else wx.RED))
                 dc.DrawRectangle(20 + 80*col, 20 + 80*row, 80, 80)
-                if value > 0:
-                    dc.DrawText(str(value), 30 + 80 * col, 30 + 80 * row)
+                if value < 15:
+                    dc.DrawText(str(value+1), 30 + 80 * col, 30 + 80 * row)
