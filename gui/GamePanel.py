@@ -11,7 +11,7 @@ class GamePanel(wx.Panel):
         self.Bind(wx.EVT_KEY_UP, self._handleKeyDown)
 
     def _shuffle(self):
-        for i in range(20):
+        for i in range(120):
             success = False
             while not success:
                 direction = random.randint(1, 4)
